@@ -620,9 +620,10 @@ void ldap_check_account_strings(msktutil_flags *flags)
             ldap_simple_set_attr(flags->ldap.get(), dn, "dNSHostName", flags->hostname);
     }
 
-    if (flags->set_description)
-        ldap_simple_set_attr(flags->ldap.get(), dn, "description", flags->description);
-
+    for (std::map<std::string, std::string>::const_iterator it = flags->attributes.begin();
+         it != flags->attributes.end(); ++it) {
+        ldap_simple_set_attr(flags->ldap.get(), dn, it->first, it->second);
+    }
 
 /*
   Not much use for these, since Computer accounts don't have perms to update them.

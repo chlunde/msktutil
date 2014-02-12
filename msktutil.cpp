@@ -667,10 +667,29 @@ int main(int argc, char *argv [])
         /* Set the description on the computer account */
         if (!strcmp(argv[i], "--description")) {
             if (++i < argc) {
-                exec->flags->set_description = true;
-                exec->flags->description = argv[i];
+                exec->flags->attributes["description"] = argv[i];
             } else {
                 fprintf(stderr, "Error: No description given after '%s'\n", argv[i - 1]);
+                goto error;
+            }
+            continue;
+        }
+
+        /* Set any other attribute on the computer account */
+        if (!strcmp(argv[i], "--set-attribute")) {
+            if (++i < argc) {
+                std::string kvpair(argv[i]);
+                size_t separator_index = kvpair.find("=");
+                if (separator_index != std::string::npos) {
+                    std::string key = kvpair.substr(0, separator_index);
+                    std::string value = kvpair.substr(separator_index + 1);
+                    exec->flags->attributes[key] = value;
+                } else {
+                    fprintf(stderr, "Error: Attribute after '%s' must have format key=value\n", argv[i - 1]);
+                    goto error;
+                }
+            } else {
+                fprintf(stderr, "Error: No key=value given after '%s'\n", argv[i - 1]);
                 goto error;
             }
             continue;
@@ -793,7 +812,6 @@ error:
 msktutil_flags::msktutil_flags() :
     password(),
     ldap(),
-    set_description(false),
     set_userPrincipalName(false),
     no_reverse_lookups(false),
     server_behind_nat(false),

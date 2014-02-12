@@ -68,6 +68,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <map>
 #include <memory>
 
 #ifndef PACKAGE_NAME
@@ -164,7 +165,7 @@ struct msktutil_flags {
     std::string keytab_auth_princ;
     std::string ldap_ou;
     std::string hostname;
-    std::string description;
+    std::map<std::string, std::string> attributes;
     std::string server;
     std::string realm_name;
     std::string lower_realm_name;
@@ -183,7 +184,6 @@ struct msktutil_flags {
     std::string ad_userPrincipal;
     std::vector<std::string> ad_principals;
 
-    bool set_description;
     bool set_userPrincipalName;
     bool no_reverse_lookups;
     bool server_behind_nat;

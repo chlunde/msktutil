@@ -223,6 +223,10 @@ attribute.  Generally requires administrator credentials.
 Sets the account's description attribute to the given text (or removes if text
 is '').  Generally requires administrator credentials.
 .TP
+--set-attribute <attribute-name>=<attribute-value>
+Set or update any LDAP attribute, such as displayName, sn and givenName.
+Use at your own risk.  Generally requires administrator credentials.
+.TP
 --disable-delegation
 Disables the account from being trusted for delegation.  This modifies the
 userAccountControl attribute.  Generally requires administrator credentials.
